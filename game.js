@@ -13,8 +13,11 @@ const path = [
 15,10,5
 ];
 
-// SAFE ZONES (indexes of path)
-const safeZones = [0, 8, 13]; // start + 2 points
+// SAFE ZONES
+const safeZones = [0, 8, 13];
+
+// FINAL POSITION
+const finalIndex = path.length - 1;
 
 // CREATE BOARD
 function createBoard() {
@@ -32,9 +35,14 @@ else if (i < 15) cell.classList.add("yellow");
 else if (i < 20) cell.classList.add("blue");
 else cell.classList.add("white");
 
-// MARK SAFE ZONE
+// SAFE ZONE MARK
 if (safeZones.includes(path.indexOf(i))) {
   cell.style.border = "3px solid gold";
+}
+
+// FINAL HOME MARK
+if (path[finalIndex] === i) {
+  cell.style.border = "3px solid white";
 }
 
 // PLAYER 1
@@ -65,9 +73,18 @@ let dice = Math.floor(Math.random() * 6) + 1;
 document.getElementById("diceResult").innerText = "Dice: " + dice;
 
 if (currentPlayer === 1) {
+
+// EXACT RULE CHECK
+if (player1Pos + dice > finalIndex) {
+  alert("❌ Need exact number to finish!");
+  currentPlayer = 2;
+  createBoard();
+  return;
+}
+
 player1Pos += dice;
 
-if (player1Pos >= path.length) {
+if (player1Pos === finalIndex) {
   alert("🏆 Player 1 Wins!");
   resetGame();
   return;
@@ -77,9 +94,17 @@ checkKill(1);
 currentPlayer = 2;
 
 } else {
+
+if (player2Pos + dice > finalIndex) {
+  alert("❌ Need exact number to finish!");
+  currentPlayer = 1;
+  createBoard();
+  return;
+}
+
 player2Pos += dice;
 
-if (player2Pos >= path.length) {
+if (player2Pos === finalIndex) {
   alert("🏆 Player 2 Wins!");
   resetGame();
   return;
@@ -95,14 +120,9 @@ createBoard();
 
 // KILL SYSTEM
 function checkKill(player) {
-let p1Index = player1Pos;
-let p2Index = player2Pos;
+if (player1Pos === player2Pos) {
 
-// SAME POSITION
-if (p1Index === p2Index) {
-
-// CHECK SAFE ZONE
-if (safeZones.includes(p1Index)) return;
+if (safeZones.includes(player1Pos)) return;
 
 if (player === 1) {
   player2Pos = 0;
