@@ -1,9 +1,12 @@
-// PLAYER POSITIONS
-let player1Pos = 0;
-let player2Pos = 0;
+// PLAYER DATA
+let players = [
+{ pos: -1, color: "p1" }, // RED
+{ pos: -1, color: "p2" }, // GREEN
+{ pos: -1, color: "p3" }, // YELLOW
+{ pos: -1, color: "p4" }  // BLUE
+];
 
-// TURN
-let currentPlayer = 1;
+let currentPlayer = 0;
 
 // PATH
 const path = [
@@ -13,10 +16,7 @@ const path = [
 15,10,5
 ];
 
-// SAFE ZONES
 const safeZones = [0, 8, 13];
-
-// FINAL POSITION
 const finalIndex = path.length - 1;
 
 // CREATE BOARD
@@ -35,36 +35,32 @@ else if (i < 15) cell.classList.add("yellow");
 else if (i < 20) cell.classList.add("blue");
 else cell.classList.add("white");
 
-// SAFE ZONE MARK
+// SAFE ZONE
 if (safeZones.includes(path.indexOf(i))) {
   cell.style.border = "3px solid gold";
 }
 
-// FINAL HOME MARK
+// FINAL
 if (path[finalIndex] === i) {
   cell.style.border = "3px solid white";
 }
 
-// PLAYER 1
-if (path[player1Pos] === i) {
-  let p1 = document.createElement("div");
-  p1.className = "player p1";
-  cell.appendChild(p1);
-}
-
-// PLAYER 2
-if (path[player2Pos] === i) {
-  let p2 = document.createElement("div");
-  p2.className = "player p2";
-  cell.appendChild(p2);
-}
+// ADD PLAYERS
+players.forEach((p, index) => {
+  if (p.pos !== -1 && path[p.pos] === i) {
+    let token = document.createElement("div");
+    token.className = "player " + p.color;
+    cell.appendChild(token);
+  }
+});
 
 board.appendChild(cell);
 
 }
 
+let names = ["🔴 P1", "🟢 P2", "🟡 P3", "🔵 P4"];
 document.getElementById("turnText").innerText =
-currentPlayer === 1 ? "🔴 Player 1 Turn" : "🔵 Player 2 Turn";
+names[currentPlayer] + " Turn";
 }
 
 // DICE
@@ -72,74 +68,69 @@ function rollDice() {
 let dice = Math.floor(Math.random() * 6) + 1;
 document.getElementById("diceResult").innerText = "Dice: " + dice;
 
-if (currentPlayer === 1) {
+let player = players[currentPlayer];
 
-// EXACT RULE CHECK
-if (player1Pos + dice > finalIndex) {
-  alert("❌ Need exact number to finish!");
-  currentPlayer = 2;
-  createBoard();
-  return;
+// UNLOCK WITH 6
+if (player.pos === -1) {
+if (dice === 6) {
+player.pos = 0;
+} else {
+nextTurn();
+return;
 }
-
-player1Pos += dice;
-
-if (player1Pos === finalIndex) {
-  alert("🏆 Player 1 Wins!");
-  resetGame();
-  return;
-}
-
-checkKill(1);
-currentPlayer = 2;
-
 } else {
 
-if (player2Pos + dice > finalIndex) {
-  alert("❌ Need exact number to finish!");
-  currentPlayer = 1;
-  createBoard();
+// EXACT RULE
+if (player.pos + dice > finalIndex) {
+  nextTurn();
   return;
 }
 
-player2Pos += dice;
+player.pos += dice;
 
-if (player2Pos === finalIndex) {
-  alert("🏆 Player 2 Wins!");
+// WIN
+if (player.pos === finalIndex) {
+  alert(`🏆 Player ${currentPlayer + 1} Wins!`);
   resetGame();
   return;
 }
 
-checkKill(2);
-currentPlayer = 1;
+checkKill(currentPlayer);
 
 }
+
+// EXTRA TURN ON 6
+if (dice !== 6) nextTurn();
 
 createBoard();
 }
 
+// NEXT TURN
+function nextTurn() {
+currentPlayer = (currentPlayer + 1) % 4;
+}
+
 // KILL SYSTEM
-function checkKill(player) {
-if (player1Pos === player2Pos) {
+function checkKill(playerIndex) {
+players.forEach((p, i) => {
+if (i !== playerIndex && p.pos !== -1) {
 
-if (safeZones.includes(player1Pos)) return;
+  if (p.pos === players[playerIndex].pos) {
 
-if (player === 1) {
-  player2Pos = 0;
-  alert("💥 Player 1 killed Player 2!");
-} else {
-  player1Pos = 0;
-  alert("💥 Player 2 killed Player 1!");
+    if (safeZones.includes(p.pos)) return;
+
+    p.pos = -1;
+    alert(`💥 Player ${playerIndex + 1} killed Player ${i + 1}!`);
+  }
 }
 
-}
+});
 }
 
 // RESET
 function resetGame() {
-player1Pos = 0;
-player2Pos = 0;
-currentPlayer = 1;
+players.forEach(p => p.pos = -1);
+currentPlayer = 0;
 createBoard();
 }
 
