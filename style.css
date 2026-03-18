@@ -34,3 +34,16 @@ height: 20px;
 background: black;
 border-radius: 50%;
 }
+.player {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+}
+
+.p1 {
+  background: red;
+}
+
+.p2 {
+  background: blue;
+}
