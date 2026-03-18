@@ -1,7 +1,11 @@
-// PLAYER POSITION
-let position = 0;
+// PLAYER POSITIONS
+let player1Pos = 0;
+let player2Pos = 0;
 
-// LUDO PATH (movement path)
+// TURN SYSTEM (1 or 2)
+let currentPlayer = 1;
+
+// PATH
 const path = [
 0,1,2,3,4,
 9,14,19,24,
@@ -25,16 +29,27 @@ else if (i < 15) cell.classList.add("yellow");
 else if (i < 20) cell.classList.add("blue");
 else cell.classList.add("white");
 
-// PLAYER POSITION
-if (path[position] === i) {
-  let player = document.createElement("div");
-  player.className = "player";
-  cell.appendChild(player);
+// PLAYER 1 (RED)
+if (path[player1Pos] === i) {
+  let p1 = document.createElement("div");
+  p1.className = "player p1";
+  cell.appendChild(p1);
+}
+
+// PLAYER 2 (BLUE)
+if (path[player2Pos] === i) {
+  let p2 = document.createElement("div");
+  p2.className = "player p2";
+  cell.appendChild(p2);
 }
 
 board.appendChild(cell);
 
 }
+
+// SHOW TURN
+document.getElementById("turnText").innerText =
+currentPlayer === 1 ? "🔴 Player 1 Turn" : "🔵 Player 2 Turn";
 }
 
 // DICE ROLL
@@ -42,13 +57,38 @@ function rollDice() {
 let dice = Math.floor(Math.random() * 6) + 1;
 document.getElementById("diceResult").innerText = "Dice: " + dice;
 
-position += dice;
+if (currentPlayer === 1) {
+player1Pos += dice;
 
-if (position >= path.length) {
-alert("🏆 You Win!");
-position = 0;
+if (player1Pos >= path.length) {
+  alert("🏆 Player 1 Wins!");
+  resetGame();
+  return;
 }
 
+currentPlayer = 2;
+
+} else {
+player2Pos += dice;
+
+if (player2Pos >= path.length) {
+  alert("🏆 Player 2 Wins!");
+  resetGame();
+  return;
+}
+
+currentPlayer = 1;
+
+}
+
+createBoard();
+}
+
+// RESET GAME
+function resetGame() {
+player1Pos = 0;
+player2Pos = 0;
+currentPlayer = 1;
 createBoard();
 }
 
