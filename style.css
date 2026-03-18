@@ -47,3 +47,13 @@ border-radius: 50%;
 .p2 {
   background: blue;
 }
+.p1 { background: red; }
+.p2 { background: green; }
+.p3 { background: yellow; }
+.p4 { background: blue; }
+
+.player {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+}
