@@ -1,5 +1,15 @@
+// PLAYER POSITION
 let position = 0;
 
+// LUDO PATH (movement path)
+const path = [
+0,1,2,3,4,
+9,14,19,24,
+23,22,21,20,
+15,10,5
+];
+
+// CREATE BOARD
 function createBoard() {
 let board = document.getElementById("board");
 board.innerHTML = "";
@@ -15,8 +25,8 @@ else if (i < 15) cell.classList.add("yellow");
 else if (i < 20) cell.classList.add("blue");
 else cell.classList.add("white");
 
-// PLAYER
-if (i === position) {
+// PLAYER POSITION
+if (path[position] === i) {
   let player = document.createElement("div");
   player.className = "player";
   cell.appendChild(player);
@@ -27,13 +37,14 @@ board.appendChild(cell);
 }
 }
 
+// DICE ROLL
 function rollDice() {
 let dice = Math.floor(Math.random() * 6) + 1;
 document.getElementById("diceResult").innerText = "Dice: " + dice;
 
 position += dice;
 
-if (position >= 24) {
+if (position >= path.length) {
 alert("🏆 You Win!");
 position = 0;
 }
