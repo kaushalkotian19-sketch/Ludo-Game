@@ -77,12 +77,19 @@ createBoard();
 }
 
 // DICE
-function rollDice() {
-let dice = Math.floor(Math.random() * 6) + 1;
-document.getElementById("diceResult").innerText = "Dice: " + dice;
+let diceBox = document.getElementById("diceBox");
 
-let player = players[currentPlayer];
-let pos = player.tokens[selectedToken];
+// animation
+diceBox.classList.add("roll");
+
+setTimeout(() => {
+let dice = Math.floor(Math.random() * 6) + 1;
+diceBox.innerText = "Dice: " + dice;
+diceBox.classList.remove("roll");
+
+playTurn(dice);
+
+}, 300);
 
 // UNLOCK
 if (pos === -1) {
@@ -153,3 +160,39 @@ createBoard();
 
 // INIT
 createBoard();
+
+function playTurn(dice) {
+let player = players[currentPlayer];
+let pos = player.tokens[selectedToken];
+
+if (pos === -1) {
+if (dice === 6) {
+player.tokens[selectedToken] = 0;
+} else {
+nextTurn();
+createBoard();
+return;
+}
+} else {
+if (pos + dice > finalIndex) {
+nextTurn();
+createBoard();
+return;
+}
+
+player.tokens[selectedToken] += dice;
+
+if (player.tokens[selectedToken] === finalIndex) {
+  alert(`🏆 Player ${currentPlayer + 1} Wins!`);
+  resetGame();
+  return;
+}
+
+checkKill(currentPlayer);
+
+}
+
+if (dice !== 6) nextTurn();
+
+createBoard();
+}
