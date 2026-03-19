@@ -4,41 +4,33 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ludo Game</title>
+
+  <!-- CSS -->
   <link rel="stylesheet" href="./ludo/style.css">
 </head>
+
 <body>
 
-<div class="ludo-container">
-  <div class="ludo">
+  <h1>🎲 Ludo Game</h1>
 
-    <div class="player-pieces">
-      <div class="player-piece" player-id="P1" piece="0"></div>
-      <div class="player-piece" player-id="P1" piece="1"></div>
-      <div class="player-piece" player-id="P1" piece="2"></div>
-      <div class="player-piece" player-id="P1" piece="3"></div>
+  <div class="ludo-container">
+    
+    <!-- BOARD -->
+    <div class="ludo"></div>
 
-      <div class="player-piece" player-id="P2" piece="0"></div>
-      <div class="player-piece" player-id="P2" piece="1"></div>
-      <div class="player-piece" player-id="P2" piece="2"></div>
-      <div class="player-piece" player-id="P2" piece="3"></div>
-    </div>
+    <!-- CONTROLS -->
+    <div class="footer">
+      <p id="dice">Dice: -</p>
+      <p id="player">Player: P1</p>
 
-    <div class="player-bases">
-      <div class="player-base" player-id="P1"></div>
-      <div class="player-base" player-id="P2"></div>
+      <button id="roll">🎲 Roll Dice</button>
+      <button id="reset">Reset</button>
     </div>
 
   </div>
 
-  <div class="footer">
-  <p id="dice">Dice: -</p>
-  <p id="player">Player: P1</p>
-
-  <button id="roll">🎲 Roll Dice</button>
-  <button id="reset">Reset</button>
-  </div>
-
-<script src="./main.js"></script>
+  <!-- JS -->
+  <script src="./main.js"></script>
 
 </body>
 </html>
