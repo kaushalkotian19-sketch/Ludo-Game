@@ -9,12 +9,10 @@ body {
 /* BOARD */
 #board {
   width: 360px;
-  height: 360px;
   margin: 20px auto;
   display: grid;
   grid-template-columns: repeat(15, 1fr);
-  gap: 2px;
-  background: transparent;
+  gap: 1px;
   padding: 5px;
   border-radius: 10px;
 }
