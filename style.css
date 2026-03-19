@@ -14,7 +14,7 @@ body {
   display: grid;
   grid-template-columns: repeat(15, 1fr);
   gap: 2px;
-  background: #1e293b;
+  background: transparent;
   padding: 5px;
   border-radius: 10px;
 }
