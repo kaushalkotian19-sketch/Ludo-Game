@@ -60,26 +60,26 @@ else if ((col >= 6 && col <= 8) || (row >= 6 && row <= 8)) {
   cell.classList.add("white");
 }
 
-// ENTRY PATH (ONLY CENTER LINE)
+// ENTRY PATH (PERFECT POSITIONS)
 
-// RED (top to center)
+// RED (top → center)
 if (col === 7 && row >= 1 && row <= 5) {
-  cell.style.background = "red";
+  cell.style.background = "#ef4444";
 }
 
-// GREEN (right to center)
+// GREEN (right → center)
 if (row === 7 && col >= 9 && col <= 13) {
-  cell.style.background = "green";
+  cell.style.background = "#22c55e";
 }
 
-// YELLOW (bottom to center)
+// YELLOW (bottom → center)
 if (col === 7 && row >= 9 && row <= 13) {
-  cell.style.background = "yellow";
+  cell.style.background = "#eab308";
 }
 
-// BLUE (left to center)
+// BLUE (left → center)
 if (row === 7 && col >= 1 && col <= 5) {
-  cell.style.background = "blue";
+  cell.style.background = "#3b82f6";
 }
 // CENTER
 if (row >= 6 && row <= 8 && col >= 6 && col <= 8) {
