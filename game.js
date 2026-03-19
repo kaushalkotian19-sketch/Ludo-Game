@@ -10,7 +10,13 @@ let currentPlayer = 0;
 let selectedToken = 0;
 
 // SIMPLE PATH
-const path = [...Array(225).keys()];
+const path = [
+  91,92,93,94,95,80,65,50,35,20,5,6,7,
+  8,9,24,39,54,69,84,99,98,97,96,95,110,
+  125,140,155,170,185,200,199,198,197,196,
+  181,166,151,136,121,106,107,108,109,110,
+  111,112,127,142,157,172
+];
 const finalIndex = path.length - 1;
 
 // CREATE BOARD
@@ -124,43 +130,33 @@ function switchToken() {
 
 // DICE
 function rollDice() {
-  let diceBox = document.getElementById("diceBox");
+  let dice = Math.floor(Math.random() * 6) + 1;
+  document.getElementById("dice").innerText = "Dice: " + dice;
 
-  diceBox.classList.add("roll");
-
-  setTimeout(() => {
-    let dice = Math.floor(Math.random() * 6) + 1;
-    diceBox.innerText = "Dice: " + dice;
-    diceBox.classList.remove("roll");
-
-    playTurn(dice);
-  }, 300);
-}
-
-// GAME LOGIC
-function playTurn(dice) {
   let player = players[currentPlayer];
   let pos = player.tokens[selectedToken];
 
-  if (pos === -1) {
-    if (dice === 6) {
-      player.tokens[selectedToken] = 0;
-    } else {
-      nextTurn();
-      createBoard();
-      return;
-    }
-  } else {
-    player.tokens[selectedToken] += dice;
+  // ENTER GAME only on 6
+  if (pos === -1 && dice === 6) {
+    player.tokens[selectedToken] = 0;
+  }
+  // MOVE token
+  else if (pos !== -1) {
+    let newPos = pos + dice;
 
-    if (player.tokens[selectedToken] > finalIndex) {
-      player.tokens[selectedToken] = finalIndex;
+    if (newPos < path.length) {
+      player.tokens[selectedToken] = newPos;
     }
   }
 
-  if (dice !== 6) nextTurn();
-
   createBoard();
+
+  // SWITCH TURN (only if not 6)
+  if (dice !== 6) {
+    currentPlayer = (currentPlayer + 1) % players.length;
+  }
+
+  updateTurnText();
 }
 
 // NEXT TURN
