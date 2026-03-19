@@ -79,6 +79,27 @@ playTurn(dice);
 }, 300);
 }
 
+function moveTokenSmooth(player, tokenIndex, steps, callback) {
+let moveCount = 0;
+
+function stepMove() {
+if (moveCount >= steps) {
+callback();
+return;
+}
+
+player.tokens[tokenIndex]++;
+moveCount++;
+
+createBoard();
+
+setTimeout(stepMove, 250); // speed (lower = faster)
+
+}
+
+stepMove();
+}
+
 // GAME LOGIC
 function playTurn(dice) {
 let player = players[currentPlayer];
@@ -99,7 +120,21 @@ createBoard();
 return;
 }
 
-player.tokens[selectedToken] += dice;
+moveTokenSmooth(player, selectedToken, dice, () => {
+
+if (player.tokens[selectedToken] === finalIndex) {
+alert("🏆 Player ${currentPlayer + 1} Wins!");
+resetGame();
+return;
+}
+
+checkKill(currentPlayer);
+
+if (dice !== 6) nextTurn();
+
+createBoard();
+});
+return;
 
 if (player.tokens[selectedToken] === finalIndex) {
   alert(`🏆 Player ${currentPlayer + 1} Wins!`);
