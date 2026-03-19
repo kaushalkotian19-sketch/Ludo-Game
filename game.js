@@ -62,13 +62,17 @@ function createBoard() {
     });
 
     board.appendChild(cell);
+  updateTurnText();
   }
         }
 
-let names = ["🔴 P1", "🟢 P2", "🟡 P3", "🔵 P4"];
-document.getElementById("turnText").innerText =
-names[currentPlayer] + " | Token: " + (selectedToken + 1);
-}
+function updateTurnText() {
+  let names = ["🔴 P1", "🟢 P2", "🟡 P3", "🔵 P4"];
+  let el = document.getElementById("turnText");
+  if (el) {
+    el.innerText = names[currentPlayer] + " | Token: " + (selectedToken + 1);
+  }
+            }
 
 // SWITCH TOKEN
 function switchToken() {
