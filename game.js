@@ -60,12 +60,27 @@ else if ((col >= 6 && col <= 8) || (row >= 6 && row <= 8)) {
   cell.classList.add("white");
 }
 
-// ENTRY COLORS (REAL LUDO TOUCH)
-if (col === 7 && row < 6) cell.style.background = "red";
-if (row === 7 && col > 8) cell.style.background = "green";
-if (col === 7 && row > 8) cell.style.background = "yellow";
-if (row === 7 && col < 6) cell.style.background = "blue";
+// ENTRY PATH (ONLY CENTER LINE)
 
+// RED (top to center)
+if (col === 7 && row >= 1 && row <= 5) {
+  cell.style.background = "red";
+}
+
+// GREEN (right to center)
+if (row === 7 && col >= 9 && col <= 13) {
+  cell.style.background = "green";
+}
+
+// YELLOW (bottom to center)
+if (col === 7 && row >= 9 && row <= 13) {
+  cell.style.background = "yellow";
+}
+
+// BLUE (left to center)
+if (row === 7 && col >= 1 && col <= 5) {
+  cell.style.background = "blue";
+}
 // CENTER
 if (row >= 6 && row <= 8 && col >= 6 && col <= 8) {
   cell.classList.add("center");
