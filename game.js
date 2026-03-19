@@ -62,22 +62,22 @@ else if ((col >= 6 && col <= 8) || (row >= 6 && row <= 8)) {
 
 // ENTRY PATH (PERFECT POSITIONS)
 
-// RED (top → center)
+// RED (top → center) → stop at row 5
 if (col === 7 && row >= 1 && row <= 5) {
   cell.style.background = "#ef4444";
 }
 
-// GREEN (right → center)
+// GREEN (right → center) → stop at col 13
 if (row === 7 && col >= 9 && col <= 13) {
   cell.style.background = "#22c55e";
 }
 
-// YELLOW (bottom → center)
+// YELLOW (bottom → center) → stop at row 13
 if (col === 7 && row >= 9 && row <= 13) {
   cell.style.background = "#eab308";
 }
 
-// BLUE (left → center)
+// BLUE (left → center) → stop at col 5
 if (row === 7 && col >= 1 && col <= 5) {
   cell.style.background = "#3b82f6";
 }
