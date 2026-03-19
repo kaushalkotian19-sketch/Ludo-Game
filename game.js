@@ -29,7 +29,7 @@ function createBoard() {
     // DEFAULT HIDDEN
 cell.style.visibility = "hidden";
 
-// HOME AREAS FIRST (PRIORITY)
+// HOME AREAS
 if (row < 6 && col < 6) {
   cell.style.visibility = "visible";
   cell.classList.add("home-red");
@@ -50,11 +50,17 @@ else if (row > 8 && col < 6) {
   cell.classList.add("home-blue");
 }
 
-// CROSS PATH
+// CROSS PATH (WHITE)
 else if ((col >= 6 && col <= 8) || (row >= 6 && row <= 8)) {
   cell.style.visibility = "visible";
   cell.classList.add("white");
 }
+
+// ENTRY COLORS (REAL LUDO TOUCH)
+if (col === 7 && row < 6) cell.style.background = "red";
+if (row === 7 && col > 8) cell.style.background = "green";
+if (col === 7 && row > 8) cell.style.background = "yellow";
+if (row === 7 && col < 6) cell.style.background = "blue";
 
 // CENTER
 if (row >= 6 && row <= 8 && col >= 6 && col <= 8) {
