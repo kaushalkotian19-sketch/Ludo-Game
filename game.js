@@ -29,31 +29,31 @@ function createBoard() {
     // DEFAULT HIDDEN
 cell.style.visibility = "hidden";
 
-// CROSS PATH
-if ((col >= 6 && col <= 8) || (row >= 6 && row <= 8)) {
-  cell.style.visibility = "visible";
-  cell.classList.add("white");
-}
-
-// HOME AREAS (MAKE VISIBLE)
+// HOME AREAS FIRST (PRIORITY)
 if (row < 6 && col < 6) {
   cell.style.visibility = "visible";
   cell.classList.add("home-red");
 }
 
-if (row < 6 && col > 8) {
+else if (row < 6 && col > 8) {
   cell.style.visibility = "visible";
   cell.classList.add("home-green");
 }
 
-if (row > 8 && col > 8) {
+else if (row > 8 && col > 8) {
   cell.style.visibility = "visible";
   cell.classList.add("home-yellow");
 }
 
-if (row > 8 && col < 6) {
+else if (row > 8 && col < 6) {
   cell.style.visibility = "visible";
   cell.classList.add("home-blue");
+}
+
+// CROSS PATH
+else if ((col >= 6 && col <= 8) || (row >= 6 && row <= 8)) {
+  cell.style.visibility = "visible";
+  cell.classList.add("white");
 }
 
 // CENTER
