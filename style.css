@@ -21,14 +21,15 @@ body {
 
 /* CELLS */
 .cell {
-  width: 100%;
-  aspect-ratio: 1;
-  border-radius: 6px;
+  height: 60px;
+  border-radius: 8px;
   display: flex;
   justify-content: center;
   align-items: center;
-}
 
+  /* ADD THIS */
+  border: 1px solid rgba(0,0,0,0.2);
+}
 /* COLORS */
 .white:not(.home-red):not(.home-green):not(.home-yellow):not(.home-blue) {
   background: #e2e8f0;
