@@ -25,12 +25,25 @@ function createBoard() {
     let row = Math.floor(i / 15);
     let col = i % 15;
 
+    // CROSS PATH
     if ((col >= 6 && col <= 8) || (row >= 6 && row <= 8)) {
       cell.classList.add("white");
     } else {
       cell.style.visibility = "hidden";
     }
 
+    // HOME AREAS
+    if (row < 6 && col < 6) cell.classList.add("home-red");
+    if (row < 6 && col > 8) cell.classList.add("home-green");
+    if (row > 8 && col > 8) cell.classList.add("home-yellow");
+    if (row > 8 && col < 6) cell.classList.add("home-blue");
+
+    // CENTER
+    if (row >= 6 && row <= 8 && col >= 6 && col <= 8) {
+      cell.classList.add("center");
+    }
+
+    // TOKENS
     players.forEach((p) => {
       p.tokens.forEach((pos) => {
         if (pos !== -1 && pos === i) {
