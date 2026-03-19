@@ -86,6 +86,12 @@ if (row >= 6 && row <= 8 && col >= 6 && col <= 8) {
   cell.classList.add("center");
 }
 
+// NEVER override center
+if (row >= 6 && row <= 8 && col >= 6 && col <= 8) {
+  cell.classList.add("center");
+  cell.style.background = "";
+}    
+    
     // TOKENS
     players.forEach((p) => {
       p.tokens.forEach((pos) => {
