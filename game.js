@@ -9,7 +9,7 @@ let players = [
 let currentPlayer = 0;
 let selectedToken = 0;
 
-// SIMPLE PATH
+// REAL PATH (52)
 const path = [
   91,92,93,94,95,80,65,50,35,20,5,6,7,
   8,9,24,39,54,69,84,99,98,97,96,95,110,
@@ -17,7 +17,6 @@ const path = [
   181,166,151,136,121,106,107,108,109,110,
   111,112,127,142,157,172
 ];
-const finalIndex = path.length - 1;
 
 // CREATE BOARD
 function createBoard() {
@@ -31,77 +30,60 @@ function createBoard() {
     let row = Math.floor(i / 15);
     let col = i % 15;
 
-    // CROSS PATH
     // DEFAULT HIDDEN
-cell.style.visibility = "hidden";
+    cell.style.visibility = "hidden";
 
-// HOME AREAS
-// RED HOME (INNER 4x4)
-if (row >= 1 && row <= 4 && col >= 1 && col <= 4) {
-  cell.style.visibility = "visible";
-  cell.classList.add("home-red");
-}
+    // HOME AREAS
+    if (row >= 1 && row <= 4 && col >= 1 && col <= 4) {
+      cell.style.visibility = "visible";
+      cell.classList.add("home-red");
+    }
+    else if (row >= 1 && row <= 4 && col >= 10 && col <= 13) {
+      cell.style.visibility = "visible";
+      cell.classList.add("home-green");
+    }
+    else if (row >= 10 && row <= 13 && col >= 10 && col <= 13) {
+      cell.style.visibility = "visible";
+      cell.classList.add("home-yellow");
+    }
+    else if (row >= 10 && row <= 13 && col >= 1 && col <= 4) {
+      cell.style.visibility = "visible";
+      cell.classList.add("home-blue");
+    }
 
-// GREEN HOME
-else if (row >= 1 && row <= 4 && col >= 10 && col <= 13) {
-  cell.style.visibility = "visible";
-  cell.classList.add("home-green");
-}
+    // CROSS PATH
+    else if ((col >= 6 && col <= 8) || (row >= 6 && row <= 8)) {
+      cell.style.visibility = "visible";
+      cell.classList.add("white");
+    }
 
-// YELLOW HOME
-else if (row >= 10 && row <= 13 && col >= 10 && col <= 13) {
-  cell.style.visibility = "visible";
-  cell.classList.add("home-yellow");
-}
+    // ENTRY PATH COLORS
+    if (col === 7 && row >= 1 && row <= 5) {
+      cell.style.background = "#ef4444"; // red
+    }
 
-// BLUE HOME
-else if (row >= 10 && row <= 13 && col >= 1 && col <= 4) {
-  cell.style.visibility = "visible";
-  cell.classList.add("home-blue");
-}
+    if (row === 7 && col >= 9 && col <= 13) {
+      cell.style.background = "#22c55e"; // green
+    }
 
-// CROSS PATH (WHITE)
-else if ((col >= 6 && col <= 8) || (row >= 6 && row <= 8)) {
-  cell.style.visibility = "visible";
-  cell.classList.add("white");
-}
+    if (col === 7 && row >= 9 && row <= 13) {
+      cell.style.background = "#eab308"; // yellow
+    }
 
-// ENTRY PATH (PERFECT POSITIONS)
+    if (row === 7 && col >= 1 && col <= 5) {
+      cell.style.background = "#3b82f6"; // blue
+    }
 
-// RED (top → center) → stop at row 5
-if (col === 7 && row >= 1 && row <= 5) {
-  cell.style.background = "#ef4444";
-}
+    // CENTER FIX
+    if (row >= 6 && row <= 8 && col >= 6 && col <= 8) {
+      cell.classList.add("center");
+      cell.style.background = "";
+    }
 
-// GREEN (right → center) → stop at col 13
-if (row === 7 && col >= 9 && col <= 13) {
-  cell.style.background = "#22c55e";
-}
-
-// YELLOW (bottom → center) → stop at row 13
-if (col === 7 && row >= 9 && row <= 13) {
-  cell.style.background = "#eab308";
-}
-
-// BLUE (left → center) → stop at col 5
-if (row === 7 && col >= 1 && col <= 5) {
-  cell.style.background = "#3b82f6";
-}
-// CENTER
-if (row >= 6 && row <= 8 && col >= 6 && col <= 8) {
-  cell.classList.add("center");
-}
-
-// NEVER override center
-if (row >= 6 && row <= 8 && col >= 6 && col <= 8) {
-  cell.classList.add("center");
-  cell.style.background = "";
-}    
-    
-    // TOKENS
+    // TOKENS (FIXED)
     players.forEach((p) => {
       p.tokens.forEach((pos) => {
-        if (pos !== -1 && pos === i) {
+        if (pos !== -1 && path[pos] === i) {
           let token = document.createElement("div");
           token.className = "player " + p.color;
           cell.appendChild(token);
@@ -128,7 +110,7 @@ function switchToken() {
   createBoard();
 }
 
-// DICE
+// DICE + MOVEMENT
 function rollDice() {
   let dice = Math.floor(Math.random() * 6) + 1;
   document.getElementById("dice").innerText = "Dice: " + dice;
@@ -140,7 +122,7 @@ function rollDice() {
   if (pos === -1 && dice === 6) {
     player.tokens[selectedToken] = 0;
   }
-  // MOVE token
+  // MOVE
   else if (pos !== -1) {
     let newPos = pos + dice;
 
@@ -151,18 +133,12 @@ function rollDice() {
 
   createBoard();
 
-  // SWITCH TURN (only if not 6)
+  // TURN CHANGE
   if (dice !== 6) {
     currentPlayer = (currentPlayer + 1) % players.length;
   }
 
   updateTurnText();
-}
-
-// NEXT TURN
-function nextTurn() {
-  currentPlayer = (currentPlayer + 1) % 4;
-  selectedToken = 0;
 }
 
 // START
