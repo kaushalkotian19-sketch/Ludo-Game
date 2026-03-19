@@ -12,7 +12,7 @@ body {
   margin: 20px auto;
   display: grid;
   grid-template-columns: repeat(15, 1fr);
-  gap: 1px;
+  gap: 2px;
   padding: 5px;
   border-radius: 10px;
 }
@@ -28,58 +28,9 @@ body {
   border: 1px solid rgba(0,0,0,0.2);
 }
 
-  /* ADD THIS */
-  border: 1px solid rgba(0,0,0,0.2);
-}
-/* COLORS */
-.white:not(.home-red):not(.home-green):not(.home-yellow):not(.home-blue) {
+/* PATH */
+.white {
   background: #e2e8f0;
-}
-
-/* TOKENS */
-.player {
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-}
-
-.p1 { background: red; }
-.p2 { background: green; }
-.p3 { background: yellow; }
-.p4 { background: blue; }
-
-/* CONTROLS */
-#controls {
-  margin-top: 20px;
-}
-
-#diceBox {
-  font-size: 22px;
-  margin-bottom: 10px;
-}
-
-/* BUTTONS */
-button {
-  padding: 12px 18px;
-  margin: 8px;
-  border-radius: 10px;
-  border: none;
-  font-size: 16px;
-  background: linear-gradient(45deg,#ef4444,#b91c1c);
-  color: white;
-}
-
-/* DICE ANIMATION */
-.roll {
-  animation: shake 0.4s;
-}
-
-@keyframes shake {
-  0% { transform: rotate(0deg); }
-  25% { transform: rotate(10deg); }
-  50% { transform: rotate(-10deg); }
-  75% { transform: rotate(10deg); }
-  100% { transform: rotate(0deg); }
 }
 
 /* HOME COLORS */
@@ -91,4 +42,27 @@ button {
 /* CENTER */
 .center {
   background: conic-gradient(red, yellow, green, blue);
+}
+
+/* TOKENS */
+.player {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+}
+
+.p1 { background: red; }
+.p2 { background: green; }
+.p3 { background: yellow; }
+.p4 { background: blue; }
+
+/* BUTTONS */
+button {
+  padding: 12px 18px;
+  margin: 8px;
+  border-radius: 10px;
+  border: none;
+  font-size: 16px;
+  background: linear-gradient(45deg,#ef4444,#b91c1c);
+  color: white;
 }
