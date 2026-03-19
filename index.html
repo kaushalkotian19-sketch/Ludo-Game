@@ -1,25 +1,33 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ludo Game</title>
-<link rel="stylesheet" href="style.css?v=3">
-</head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🎲 Ludo Game</title>
 
+  <link rel="stylesheet" href="style.css">
+</head>
 <body>
 
-<h2>🎲 Ludo Game</h2>
-<h3 id="turnText">Loading...</h3>
+  <h1>🎲 Ludo Game</h1>
 
-<div id="board"></div>
+  <!-- TURN TEXT -->
+  <h2 id="turnText">Loading...</h2>
 
-<div id="controls">
-  <div id="diceBox">Dice: -</div>
-  <button onclick="rollDice()">🎲 Roll Dice</button>
-  <button onclick="switchToken()">🔄 Switch Token</button>
-</div>
+  <!-- GAME BOARD -->
+  <div id="board"></div>
 
-<script src="game.js?v=3"></script>
+  <!-- DICE -->
+  <h2 id="dice">Dice: -</h2>
+
+  <!-- CONTROLS -->
+  <div id="controls">
+    <button onclick="rollDice()">🎲 Roll Dice</button>
+    <button onclick="switchToken()">🔁 Switch Token</button>
+  </div>
+
+  <!-- SCRIPT -->
+  <script src="game.js"></script>
 
 </body>
 </html>
