@@ -10,7 +10,13 @@ let currentPlayer = 0;
 let selectedToken = 0;
 
 // AUTO PATH
-let path = [];
+const path = [
+  6,7,8,23,38,53,68,83,98,113,128,129,130,
+  131,132,117,102,87,72,57,42,27,12,13,14,
+  29,44,59,74,89,104,105,106,107,108,123,
+  138,153,168,183,198,213,212,211,210,209,
+  194,179,164,149,134
+];
 
 // CREATE BOARD
 function createBoard() {
@@ -53,8 +59,7 @@ function createBoard() {
       cell.classList.add("white");
 
       // 🔥 IMPORTANT: build path automatically
-      path.push(i);
-    }
+    
 
     // ENTRY COLORS
     if (col === 7 && row >= 1 && row <= 5) {
