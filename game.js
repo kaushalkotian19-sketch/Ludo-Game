@@ -30,22 +30,26 @@ function createBoard() {
 cell.style.visibility = "hidden";
 
 // HOME AREAS
-if (row < 6 && col < 6) {
+// RED HOME (INNER 4x4)
+if (row >= 1 && row <= 4 && col >= 1 && col <= 4) {
   cell.style.visibility = "visible";
   cell.classList.add("home-red");
 }
 
-else if (row < 6 && col > 8) {
+// GREEN HOME
+else if (row >= 1 && row <= 4 && col >= 10 && col <= 13) {
   cell.style.visibility = "visible";
   cell.classList.add("home-green");
 }
 
-else if (row > 8 && col > 8) {
+// YELLOW HOME
+else if (row >= 10 && row <= 13 && col >= 10 && col <= 13) {
   cell.style.visibility = "visible";
   cell.classList.add("home-yellow");
 }
 
-else if (row > 8 && col < 6) {
+// BLUE HOME
+else if (row >= 10 && row <= 13 && col >= 1 && col <= 4) {
   cell.style.visibility = "visible";
   cell.classList.add("home-blue");
 }
