@@ -77,3 +77,14 @@ button {
   75% { transform: rotate(10deg); }
   100% { transform: rotate(0deg); }
 }
+
+/* HOME COLORS */
+.home-red { background: #ef4444; }
+.home-green { background: #22c55e; }
+.home-yellow { background: #eab308; }
+.home-blue { background: #3b82f6; }
+
+/* CENTER */
+.center {
+  background: linear-gradient(45deg, red, yellow, green, blue);
+}
