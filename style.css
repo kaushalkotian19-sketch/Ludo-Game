@@ -27,11 +27,12 @@ margin-top: 10px;
 
 /* CELLS */
 .cell {
-height: 60px;
-border-radius: 8px;
-display: flex;
-justify-content: center;
-align-items: center;
+  width: 100%;
+  aspect-ratio: 1; /* perfect square */
+  border-radius: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* COLORS */
