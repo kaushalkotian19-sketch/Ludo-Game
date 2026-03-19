@@ -21,11 +21,14 @@ body {
 
 /* CELLS */
 .cell {
-  height: 60px;
-  border-radius: 8px;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 6px;
   display: flex;
   justify-content: center;
   align-items: center;
+  border: 1px solid rgba(0,0,0,0.2);
+}
 
   /* ADD THIS */
   border: 1px solid rgba(0,0,0,0.2);
