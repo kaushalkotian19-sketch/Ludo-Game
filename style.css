@@ -30,7 +30,9 @@ body {
 }
 
 /* COLORS */
-.white { background: #e2e8f0; }
+.white:not(.home-red):not(.home-green):not(.home-yellow):not(.home-blue) {
+  background: #e2e8f0;
+}
 
 /* TOKENS */
 .player {
