@@ -13,15 +13,15 @@ margin-top: 10px;
 
 /* BOARD */
 #board {
-width: 320px;
-height: 320px;
-margin: 20px auto;
-display: grid;
-grid-template-columns: repeat(5, 1fr);
-gap: 3px;
-background: #1e293b;
-padding: 5px;
-border-radius: 15px;
+  width: 360px;
+  height: 360px;
+  margin: 20px auto;
+  display: grid;
+  grid-template-columns: repeat(15, 1fr);
+  gap: 1px;
+  background: #1e293b;
+  padding: 5px;
+  border-radius: 10px;
 }
 
 /* CELLS */
