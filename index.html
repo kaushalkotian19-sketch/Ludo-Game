@@ -3,31 +3,42 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🎲 Ludo Game</title>
-
-  <link rel="stylesheet" href="style.css">
+  <title>Ludo Game</title>
+  <link rel="stylesheet" href="./ludo/style.css">
 </head>
 <body>
 
-  <h1>🎲 Ludo Game</h1>
+<div class="ludo-container">
+  <div class="ludo">
 
-  <!-- TURN TEXT -->
-  <h2 id="turnText">Loading...</h2>
+    <div class="player-pieces">
+      <div class="player-piece" player-id="P1" piece="0"></div>
+      <div class="player-piece" player-id="P1" piece="1"></div>
+      <div class="player-piece" player-id="P1" piece="2"></div>
+      <div class="player-piece" player-id="P1" piece="3"></div>
 
-  <!-- GAME BOARD -->
-  <div id="board"></div>
+      <div class="player-piece" player-id="P2" piece="0"></div>
+      <div class="player-piece" player-id="P2" piece="1"></div>
+      <div class="player-piece" player-id="P2" piece="2"></div>
+      <div class="player-piece" player-id="P2" piece="3"></div>
+    </div>
 
-  <!-- DICE -->
-  <h2 id="dice">Dice: -</h2>
+    <div class="player-bases">
+      <div class="player-base" player-id="P1"></div>
+      <div class="player-base" player-id="P2"></div>
+    </div>
 
-  <!-- CONTROLS -->
-  <div id="controls">
-    <button onclick="rollDice()">🎲 Roll Dice</button>
-    <button onclick="switchToken()">🔁 Switch Token</button>
   </div>
 
-  <!-- SCRIPT -->
-  <script src="game.js"></script>
+  <div class="footer">
+    <button id="dice-btn">🎲 Roll Dice</button>
+    <div class="dice-value">-</div>
+    <button id="reset-btn">Reset</button>
+    <h3>Player: <span class="active-player">P1</span></h3>
+  </div>
+</div>
+
+<script type="module" src="./main.js"></script>
 
 </body>
 </html>
