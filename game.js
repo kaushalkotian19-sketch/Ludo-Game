@@ -22,35 +22,48 @@ const finalIndex = path.length - 1;
 
 // CREATE BOARD
 function createBoard() {
-let board = document.getElementById("board");
-if (!board) return;
+  let board = document.getElementById("board");
+  if (!board) return;
 
-board.innerHTML = "";
+  board.innerHTML = "";
 
-for (let i = 0; i < 25; i++) {
-let cell = document.createElement("div");
-cell.className = "cell";
+  // 15x15 grid
+  for (let i = 0; i < 225; i++) {
+    let cell = document.createElement("div");
+    cell.className = "cell";
 
-if (i < 5) cell.classList.add("red");
-else if (i < 10) cell.classList.add("green");
-else if (i < 15) cell.classList.add("yellow");
-else if (i < 20) cell.classList.add("blue");
-else cell.classList.add("white");
+    let row = Math.floor(i / 15);
+    let col = i % 15;
 
-players.forEach((p) => {
-  p.tokens.forEach((pos) => {
-    if (pos !== -1 && path[pos] === i) {
-      let token = document.createElement("div");
-      token.className = "player " + p.color;
-      token.style.margin = "2px";
-      cell.appendChild(token);
+    // CROSS SHAPE (real Ludo style)
+    if (
+      (col >= 6 && col <= 8) || 
+      (row >= 6 && row <= 8)
+    ) {
+      cell.classList.add("white");
+    } else {
+      cell.style.visibility = "hidden"; // hide corners
     }
-  });
-});
 
-board.appendChild(cell);
+    // SAFE ZONES (example positions)
+    if (i === 112 || i === 97 || i === 127) {
+      cell.style.background = "#aaa";
+    }
 
-}
+    // TOKENS
+    players.forEach((p) => {
+      p.tokens.forEach((pos) => {
+        if (pos !== -1 && path[pos] === i) {
+          let token = document.createElement("div");
+          token.className = "player " + p.color;
+          cell.appendChild(token);
+        }
+      });
+    });
+
+    board.appendChild(cell);
+  }
+        }
 
 let names = ["🔴 P1", "🟢 P2", "🟡 P3", "🔵 P4"];
 document.getElementById("turnText").innerText =
