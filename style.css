@@ -88,5 +88,5 @@ button {
 
 /* CENTER */
 .center {
-  background: #ffffff;
+  background: conic-gradient(red, yellow, green, blue);
 }
