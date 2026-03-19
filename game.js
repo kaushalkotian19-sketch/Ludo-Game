@@ -26,22 +26,40 @@ function createBoard() {
     let col = i % 15;
 
     // CROSS PATH
-    if ((col >= 6 && col <= 8) || (row >= 6 && row <= 8)) {
-      cell.classList.add("white");
-    } else {
-      cell.style.visibility = "hidden";
-    }
+    // DEFAULT HIDDEN
+cell.style.visibility = "hidden";
 
-    // HOME AREAS
-    if (row < 6 && col < 6) cell.classList.add("home-red");
-    if (row < 6 && col > 8) cell.classList.add("home-green");
-    if (row > 8 && col > 8) cell.classList.add("home-yellow");
-    if (row > 8 && col < 6) cell.classList.add("home-blue");
+// CROSS PATH
+if ((col >= 6 && col <= 8) || (row >= 6 && row <= 8)) {
+  cell.style.visibility = "visible";
+  cell.classList.add("white");
+}
 
-    // CENTER
-    if (row >= 6 && row <= 8 && col >= 6 && col <= 8) {
-      cell.classList.add("center");
-    }
+// HOME AREAS (MAKE VISIBLE)
+if (row < 6 && col < 6) {
+  cell.style.visibility = "visible";
+  cell.classList.add("home-red");
+}
+
+if (row < 6 && col > 8) {
+  cell.style.visibility = "visible";
+  cell.classList.add("home-green");
+}
+
+if (row > 8 && col > 8) {
+  cell.style.visibility = "visible";
+  cell.classList.add("home-yellow");
+}
+
+if (row > 8 && col < 6) {
+  cell.style.visibility = "visible";
+  cell.classList.add("home-blue");
+}
+
+// CENTER
+if (row >= 6 && row <= 8 && col >= 6 && col <= 8) {
+  cell.classList.add("center");
+}
 
     // TOKENS
     players.forEach((p) => {
