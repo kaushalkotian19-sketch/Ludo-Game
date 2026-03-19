@@ -9,19 +9,15 @@ let players = [
 let currentPlayer = 0;
 let selectedToken = 0;
 
-// REAL PATH (52)
-const path = [
-  91,92,93,94,95,80,65,50,35,20,5,6,7,
-  8,9,24,39,54,69,84,99,98,97,96,95,110,
-  125,140,155,170,185,200,199,198,197,196,
-  181,166,151,136,121,106,107,108,109,110,
-  111,112,127,142,157,172
-];
+// AUTO PATH
+let path = [];
 
 // CREATE BOARD
 function createBoard() {
   let board = document.getElementById("board");
   board.innerHTML = "";
+
+  path = []; // reset path every time
 
   for (let i = 0; i < 225; i++) {
     let cell = document.createElement("div");
@@ -51,27 +47,30 @@ function createBoard() {
       cell.classList.add("home-blue");
     }
 
-    // CROSS PATH
+    // CROSS PATH (AUTO PATH BUILD)
     else if ((col >= 6 && col <= 8) || (row >= 6 && row <= 8)) {
       cell.style.visibility = "visible";
       cell.classList.add("white");
+
+      // 🔥 IMPORTANT: build path automatically
+      path.push(i);
     }
 
-    // ENTRY PATH COLORS
+    // ENTRY COLORS
     if (col === 7 && row >= 1 && row <= 5) {
-      cell.style.background = "#ef4444"; // red
+      cell.style.background = "#ef4444";
     }
 
     if (row === 7 && col >= 9 && col <= 13) {
-      cell.style.background = "#22c55e"; // green
+      cell.style.background = "#22c55e";
     }
 
     if (col === 7 && row >= 9 && row <= 13) {
-      cell.style.background = "#eab308"; // yellow
+      cell.style.background = "#eab308";
     }
 
     if (row === 7 && col >= 1 && col <= 5) {
-      cell.style.background = "#3b82f6"; // blue
+      cell.style.background = "#3b82f6";
     }
 
     // CENTER FIX
@@ -133,7 +132,7 @@ function rollDice() {
 
   createBoard();
 
-  // TURN CHANGE
+  // SWITCH TURN
   if (dice !== 6) {
     currentPlayer = (currentPlayer + 1) % players.length;
   }
