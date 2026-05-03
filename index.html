@@ -3,34 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ludo Game</title>
-
-  <!-- CSS -->
-  <link rel="stylesheet" href="./ludo/style.css">
+  <title>Ludo Master</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-
   <h1>🎲 Ludo Game</h1>
-
   <div class="ludo-container">
-    
-    <!-- BOARD -->
-    <div class="ludo"></div>
-
-    <!-- CONTROLS -->
+    <div class="ludo" id="board"></div>
     <div class="footer">
-      <p id="dice">Dice: -</p>
-      <p id="player">Player: P1</p>
-
+      <p id="dice">Dice: ⚀</p>
+      <p id="player-turn">Current Turn: <span id="current-p">P1 (Blue)</span></p>
       <button id="roll">🎲 Roll Dice</button>
-      <button id="reset">Reset</button>
+      <button id="reset">Reset Game</button>
     </div>
-
   </div>
-
-  <!-- JS -->
-  <script src="./main.js"></script>
-
+  <script src="main.js"></script>
 </body>
 </html>
