@@ -7,14 +7,14 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>🎲 Ludo Game</h1>
+  <h1>🎲 Ludo Master</h1>
   <div class="ludo-container">
     <div class="ludo" id="board"></div>
     <div class="footer">
       <p id="dice">Dice: ⚀</p>
-      <p id="player-turn">Current Turn: <span id="current-p">P1 (Blue)</span></p>
+      <p id="player-turn">Turn: <span id="current-p">P1 (Blue)</span></p>
       <button id="roll">🎲 Roll Dice</button>
-      <button id="reset">Reset Game</button>
+      <button id="reset" onclick="location.reload()">Reset Game</button>
     </div>
   </div>
   <script src="main.js"></script>
