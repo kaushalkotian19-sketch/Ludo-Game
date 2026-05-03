@@ -1,103 +1,114 @@
-const ludo = document.querySelector(".ludo");
-const diceText = document.querySelector("#dice");
-const playerText = document.querySelector("#player");
+const ludo = document.getElementById("board");
+const diceText = document.getElementById("dice");
+const playerText = document.getElementById("current-p");
 
 let currentPlayer = "P1";
-let positions = {
-  P1: -1,
-  P2: -1
-};
+let positions = { P1: -1, P2: -1 };
 
-let path = [
-  {x:50, y:350}, {x:100, y:350}, {x:150, y:350}, {x:200, y:350},
-  {x:250, y:350}, {x:300, y:350}, {x:350, y:350},
-
-  {x:350, y:300}, {x:350, y:250}, {x:350, y:200},
-  {x:350, y:150}, {x:350, y:100}, {x:350, y:50},
-
-  {x:300, y:50}, {x:250, y:50}, {x:200, y:50},
-  {x:150, y:50}, {x:100, y:50}, {x:50, y:50},
-
-  {x:50, y:100}, {x:50, y:150}, {x:50, y:200},
-  {x:50, y:250}, {x:50, y:300}
+// The 52-step shared circuit [col, row]
+const path = [
+  [1,6],[2,6],[3,6],[4,6],[5,6],         // Blue Entrance
+  [6,5],[6,4],[6,3],[6,2],[6,1],[6,0],   // Up
+  [7,0],[8,0],                           // Top Turn
+  [8,1],[8,2],[8,3],[8,4],[8,5],         // Down
+  [9,6],[10,6],[11,6],[12,6],[13,6],[14,6], // Right
+  [14,7],[14,8],                         // Right Turn
+  [13,8],[12,8],[11,8],[10,8],[9,8],     // Left
+  [8,9],[8,10],[8,11],[8,12],[8,13],[8,14], // Down
+  [7,14],[6,14],                         // Bottom Turn
+  [6,13],[6,12],[6,11],[6,10],[6,9],     // Up
+  [5,8],[4,8],[3,8],[2,8],[1,8],[0,8],   // Left
+  [0,7],[0,6]                            // Return
 ];
 
-let tokens = {
+// Center coordinates for the starting yards
+const yards = {
+  P1: [2.5, 2.5], // Blue yard center
+  P2: [11.5, 11.5] // Green yard center
+};
+
+const tokens = {
   P1: createToken("P1"),
   P2: createToken("P2")
 };
 
 function createToken(player) {
   const piece = document.createElement("div");
-  piece.classList.add("player-piece");
+  piece.className = "player-piece";
   piece.setAttribute("player-id", player);
-
-  piece.style.display = "none";
   ludo.appendChild(piece);
-
   return piece;
 }
 
-function rollDice() {
-  let dice = Math.floor(Math.random() * 6) + 1;
-  diceText.innerText = "Dice: " + dice;
-
-  moveToken(currentPlayer, dice);
+function updateVisuals(player) {
+  const pos = positions[player];
+  const coords = pos === -1 ? yards[player] : path[pos];
+  
+  // Apply grid formula
+  tokens[player].style.left = `${(coords[0] + 0.5) * (100 / 15)}%`;
+  tokens[player].style.top = `${(coords[1] + 0.5) * (100 / 15)}%`;
 }
 
-function moveToken(player, dice) {
-  let pos = positions[player];
+function rollDice() {
+  const dice = Math.floor(Math.random() * 6) + 1;
+  const icons = ["⚀", "⚁", "⚂", "⚃", "⚄", "⚅"];
+  diceText.innerText = "Dice: " + icons[dice - 1];
 
-  // NEED 6 TO START
+  let pos = positions[currentPlayer];
+
   if (pos === -1) {
     if (dice === 6) {
-      positions[player] = 0;
-      tokens[player].style.display = "block";
-      updatePosition(player);
+      positions[currentPlayer] = 0;
     } else {
       switchPlayer();
+      return;
     }
-    return;
+  } else {
+    const newPos = pos + dice;
+    if (newPos >= path.length) {
+      alert(currentPlayer + " Wins!");
+      resetGame();
+      return;
+    }
+    positions[currentPlayer] = newPos;
   }
 
-  let newPos = pos + dice;
-
-  if (newPos >= path.length) {
-    switchPlayer();
-    return;
-  }
-
-  positions[player] = newPos;
-  updatePosition(player);
-
+  updateVisuals(currentPlayer);
+  checkCollision();
+  
+  // Player gets another turn if they roll a 6
   if (dice !== 6) {
     switchPlayer();
   }
 }
 
-function updatePosition(player) {
-  let pos = positions[player];
-  let cell = path[pos];
-
-  tokens[player].style.left = cell.x + "px";
-  tokens[player].style.top = cell.y + "px";
+function checkCollision() {
+  if (positions.P1 !== -1 && positions.P1 === positions.P2) {
+    const victim = currentPlayer === "P1" ? "P2" : "P1";
+    positions[victim] = -1;
+    updateVisuals(victim);
+    console.log(victim + " was captured and sent home!");
+  }
 }
 
 function switchPlayer() {
   currentPlayer = currentPlayer === "P1" ? "P2" : "P1";
-  playerText.innerText = "Player: " + currentPlayer;
+  playerText.innerText = currentPlayer === "P1" ? "P1 (Blue)" : "P2 (Green)";
 }
 
-// BUTTON EVENTS
-document.querySelector("#roll").onclick = rollDice;
-
-document.querySelector("#reset").onclick = () => {
+function resetGame() {
   positions = { P1: -1, P2: -1 };
-
-  tokens.P1.style.display = "none";
-  tokens.P2.style.display = "none";
-
   currentPlayer = "P1";
-  playerText.innerText = "Player: P1";
-  diceText.innerText = "Dice: -";
-};
+  updateVisuals("P1");
+  updateVisuals("P2");
+  playerText.innerText = "P1 (Blue)";
+  diceText.innerText = "Dice: ⚀";
+}
+
+// Bind Events
+document.getElementById("roll").onclick = rollDice;
+document.getElementById("reset").onclick = resetGame;
+
+// Initial placement execution
+updateVisuals("P1");
+updateVisuals("P2");
