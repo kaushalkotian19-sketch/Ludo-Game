@@ -3,112 +3,117 @@ const diceText = document.getElementById("dice");
 const playerText = document.getElementById("current-p");
 
 let currentPlayer = "P1";
-let positions = { P1: -1, P2: -1 };
+let positions = { P1: [-1, -1, -1, -1], P2: [-1, -1, -1, -1] };
+let lastRoll = 0;
+let canMove = false;
 
-// The 52-step shared circuit [col, row]
-const path = [
-  [1,6],[2,6],[3,6],[4,6],[5,6],         // Blue Entrance
-  [6,5],[6,4],[6,3],[6,2],[6,1],[6,0],   // Up
-  [7,0],[8,0],                           // Top Turn
-  [8,1],[8,2],[8,3],[8,4],[8,5],         // Down
-  [9,6],[10,6],[11,6],[12,6],[13,6],[14,6], // Right
-  [14,7],[14,8],                         // Right Turn
-  [13,8],[12,8],[11,8],[10,8],[9,8],     // Left
-  [8,9],[8,10],[8,11],[8,12],[8,13],[8,14], // Down
-  [7,14],[6,14],                         // Bottom Turn
-  [6,13],[6,12],[6,11],[6,10],[6,9],     // Up
-  [5,8],[4,8],[3,8],[2,8],[1,8],[0,8],   // Left
-  [0,7],[0,6]                            // Return
+// 52-step common circular path
+const commonPath = [
+  [1,6],[2,6],[3,6],[4,6],[5,6],[6,5],[6,4],[6,3],[6,2],[6,1],[6,0],
+  [7,0],[8,0],[8,1],[8,2],[8,3],[8,4],[8,5],[9,6],[10,6],[11,6],
+  [12,6],[13,6],[14,6],[14,7],[14,8],[13,8],[12,8],[11,8],[10,8],
+  [9,8],[8,9],[8,10],[8,11],[8,12],[8,13],[8,14],[7,14],[6,14],
+  [6,13],[6,12],[6,11],[6,10],[6,9],[5,8],[4,8],[3,8],[2,8],[1,8],[0,8],[0,7],[0,6]
 ];
 
-// Center coordinates for the starting yards
+// Private Home Lanes (6 steps each)
+const homePaths = {
+  P1: [[1, 7], [2, 7], [3, 7], [4, 7], [5, 7], [6, 7]], // Blue
+  P2: [[13, 7], [12, 7], [11, 7], [10, 7], [9, 7], [8, 7]] // Green
+};
+
+const safetyZones = [0, 8, 13, 21, 26, 34, 39, 47];
 const yards = {
-  P1: [2.5, 2.5], // Blue yard center
-  P2: [11.5, 11.5] // Green yard center
+  P1: [[1.5, 1.5], [3.5, 1.5], [1.5, 3.5], [3.5, 3.5]], 
+  P2: [[10.5, 10.5], [12.5, 10.5], [10.5, 12.5], [12.5, 12.5]]
 };
 
-const tokens = {
-  P1: createToken("P1"),
-  P2: createToken("P2")
-};
+const tokens = { P1: [], P2: [] };
 
-function createToken(player) {
-  const piece = document.createElement("div");
-  piece.className = "player-piece";
-  piece.setAttribute("player-id", player);
-  ludo.appendChild(piece);
-  return piece;
+function init() {
+  ["P1", "P2"].forEach(p => {
+    for (let i = 0; i < 4; i++) {
+      const el = document.createElement("div");
+      el.className = "player-piece";
+      el.setAttribute("player-id", p);
+      el.onclick = () => handleMove(p, i);
+      ludo.appendChild(el);
+      tokens[p].push(el);
+      render(p, i);
+    }
+  });
 }
 
-function updateVisuals(player) {
-  const pos = positions[player];
-  const coords = pos === -1 ? yards[player] : path[pos];
-  
-  // Apply grid formula
-  tokens[player].style.left = `${(coords[0] + 0.5) * (100 / 15)}%`;
-  tokens[player].style.top = `${(coords[1] + 0.5) * (100 / 15)}%`;
+function render(p, i) {
+  const step = positions[p][i];
+  let coords;
+  if (step === -1) coords = yards[p][i];
+  else if (step <= 51) coords = commonPath[step];
+  else coords = homePaths[p][step - 52];
+
+  tokens[p][i].style.left = `${(coords[0] + 0.5) * (100 / 15)}%`;
+  tokens[p][i].style.top = `${(coords[1] + 0.5) * (100 / 15)}%`;
+  tokens[p][i].classList.remove("highlight");
 }
 
 function rollDice() {
-  const dice = Math.floor(Math.random() * 6) + 1;
-  const icons = ["⚀", "⚁", "⚂", "⚃", "⚄", "⚅"];
-  diceText.innerText = "Dice: " + icons[dice - 1];
-
-  let pos = positions[currentPlayer];
-
-  if (pos === -1) {
-    if (dice === 6) {
-      positions[currentPlayer] = 0;
-    } else {
-      switchPlayer();
-      return;
-    }
-  } else {
-    const newPos = pos + dice;
-    if (newPos >= path.length) {
-      alert(currentPlayer + " Wins!");
-      resetGame();
-      return;
-    }
-    positions[currentPlayer] = newPos;
-  }
-
-  updateVisuals(currentPlayer);
-  checkCollision();
+  if (canMove) return;
+  lastRoll = Math.floor(Math.random() * 6) + 1;
+  diceText.innerText = "Dice: " + ["⚀","⚁","⚂","⚃","⚄","⚅"][lastRoll-1];
   
-  // Player gets another turn if they roll a 6
-  if (dice !== 6) {
-    switchPlayer();
+  if (!positions[currentPlayer].some((_, i) => canPieceMove(i))) {
+    setTimeout(nextTurn, 1000);
+  } else {
+    canMove = true;
+    positions[currentPlayer].forEach((_, i) => {
+      if (canPieceMove(i)) tokens[currentPlayer][i].classList.add("highlight");
+    });
   }
 }
 
-function checkCollision() {
-  if (positions.P1 !== -1 && positions.P1 === positions.P2) {
-    const victim = currentPlayer === "P1" ? "P2" : "P1";
-    positions[victim] = -1;
-    updateVisuals(victim);
-    console.log(victim + " was captured and sent home!");
+function canPieceMove(i) {
+  const pos = positions[currentPlayer][i];
+  if (pos === -1 && lastRoll !== 6) return false;
+  if (pos !== -1 && pos + lastRoll > 57) return false; // 51 common + 6 home
+  return true;
+}
+
+function handleMove(p, i) {
+  if (!canMove || p !== currentPlayer || !canPieceMove(i)) return;
+  
+  if (positions[p][i] === -1) positions[p][i] = 0;
+  else positions[p][i] += lastRoll;
+
+  render(p, i);
+  checkKill(i);
+  canMove = false;
+
+  if (positions[p].every(pos => pos === 57)) {
+    alert(p + " Wins!");
+    location.reload();
+  } else if (lastRoll !== 6) {
+    nextTurn();
   }
 }
 
-function switchPlayer() {
+function checkKill(i) {
+  const pos = positions[currentPlayer][i];
+  if (pos === -1 || pos > 51 || safetyZones.includes(pos)) return;
+  const opp = currentPlayer === "P1" ? "P2" : "P1";
+  positions[opp].forEach((oPos, idx) => {
+    if (oPos === pos) {
+      positions[opp][idx] = -1;
+      render(opp, idx);
+    }
+  });
+}
+
+function nextTurn() {
   currentPlayer = currentPlayer === "P1" ? "P2" : "P1";
   playerText.innerText = currentPlayer === "P1" ? "P1 (Blue)" : "P2 (Green)";
+  canMove = false;
+  document.querySelectorAll(".highlight").forEach(e => e.classList.remove("highlight"));
 }
 
-function resetGame() {
-  positions = { P1: -1, P2: -1 };
-  currentPlayer = "P1";
-  updateVisuals("P1");
-  updateVisuals("P2");
-  playerText.innerText = "P1 (Blue)";
-  diceText.innerText = "Dice: ⚀";
-}
-
-// Bind Events
 document.getElementById("roll").onclick = rollDice;
-document.getElementById("reset").onclick = resetGame;
-
-// Initial placement execution
-updateVisuals("P1");
-updateVisuals("P2");
+init();
